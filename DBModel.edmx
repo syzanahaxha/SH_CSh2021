@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PizzasDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminId" />
+          </Key>
+          <Property Name="AdminId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Costumer">
+          <Key>
+            <PropertyRef Name="CostumerId" />
+          </Key>
+          <Property Name="CostumerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Addresss" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TelNo" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderTb">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PizzaId" Type="int" Nullable="false" />
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="AdminId" Type="int" Nullable="false" />
+          <Property Name="Qty" Type="int" Nullable="false" />
+          <Property Name="Price" Type="real" Nullable="false" />
+          <Property Name="Payment" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pizza">
+          <Key>
+            <PropertyRef Name="PizzaId" />
+          </Key>
+          <Property Name="PizzaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Size" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Price" Type="real" Nullable="false" />
+          <Property Name="QtyStock" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_OrderTb_Admin">
+          <End Role="Admin" Type="Self.Admin" Multiplicity="1" />
+          <End Role="OrderTb" Type="Self.OrderTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Admin">
+              <PropertyRef Name="AdminId" />
+            </Principal>
+            <Dependent Role="OrderTb">
+              <PropertyRef Name="AdminId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderTb_OrderTb">
+          <End Role="Costumer" Type="Self.Costumer" Multiplicity="1" />
+          <End Role="OrderTb" Type="Self.OrderTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Costumer">
+              <PropertyRef Name="CostumerId" />
+            </Principal>
+            <Dependent Role="OrderTb">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderTb_Pizza">
+          <End Role="Pizza" Type="Self.Pizza" Multiplicity="1" />
+          <End Role="OrderTb" Type="Self.OrderTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pizza">
+              <PropertyRef Name="PizzaId" />
+            </Principal>
+            <Dependent Role="OrderTb">
+              <PropertyRef Name="PizzaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PizzasDBModelStoreContainer">
+          <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Costumer" EntityType="Self.Costumer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderTb" EntityType="Self.OrderTb" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pizza" EntityType="Self.Pizza" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_OrderTb_Admin" Association="Self.FK_OrderTb_Admin">
+            <End Role="Admin" EntitySet="Admin" />
+            <End Role="OrderTb" EntitySet="OrderTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderTb_OrderTb" Association="Self.FK_OrderTb_OrderTb">
+            <End Role="Costumer" EntitySet="Costumer" />
+            <End Role="OrderTb" EntitySet="OrderTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderTb_Pizza" Association="Self.FK_OrderTb_Pizza">
+            <End Role="Pizza" EntitySet="Pizza" />
+            <End Role="OrderTb" EntitySet="OrderTb" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PizzasDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminId" />
+          </Key>
+          <Property Name="AdminId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="OrderTbs" Relationship="Self.FK_OrderTb_Admin" FromRole="Admin" ToRole="OrderTb" />
+        </EntityType>
+        <EntityType Name="Costumer">
+          <Key>
+            <PropertyRef Name="CostumerId" />
+          </Key>
+          <Property Name="CostumerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Addresss" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TelNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="OrderTbs" Relationship="Self.FK_OrderTb_OrderTb" FromRole="Costumer" ToRole="OrderTb" />
+        </EntityType>
+        <EntityType Name="OrderTb">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PizzaId" Type="Int32" Nullable="false" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="AdminId" Type="Int32" Nullable="false" />
+          <Property Name="Qty" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Single" Nullable="false" />
+          <Property Name="Payment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Admin" Relationship="Self.FK_OrderTb_Admin" FromRole="OrderTb" ToRole="Admin" />
+          <NavigationProperty Name="Costumer" Relationship="Self.FK_OrderTb_OrderTb" FromRole="OrderTb" ToRole="Costumer" />
+          <NavigationProperty Name="Pizza" Relationship="Self.FK_OrderTb_Pizza" FromRole="OrderTb" ToRole="Pizza" />
+        </EntityType>
+        <EntityType Name="Pizza">
+          <Key>
+            <PropertyRef Name="PizzaId" />
+          </Key>
+          <Property Name="PizzaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Size" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Price" Type="Single" Nullable="false" />
+          <Property Name="QtyStock" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OrderTbs" Relationship="Self.FK_OrderTb_Pizza" FromRole="Pizza" ToRole="OrderTb" />
+        </EntityType>
+        <Association Name="FK_OrderTb_Admin">
+          <End Role="Admin" Type="Self.Admin" Multiplicity="1" />
+          <End Role="OrderTb" Type="Self.OrderTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Admin">
+              <PropertyRef Name="AdminId" />
+            </Principal>
+            <Dependent Role="OrderTb">
+              <PropertyRef Name="AdminId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderTb_OrderTb">
+          <End Role="Costumer" Type="Self.Costumer" Multiplicity="1" />
+          <End Role="OrderTb" Type="Self.OrderTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Costumer">
+              <PropertyRef Name="CostumerId" />
+            </Principal>
+            <Dependent Role="OrderTb">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderTb_Pizza">
+          <End Role="Pizza" Type="Self.Pizza" Multiplicity="1" />
+          <End Role="OrderTb" Type="Self.OrderTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pizza">
+              <PropertyRef Name="PizzaId" />
+            </Principal>
+            <Dependent Role="OrderTb">
+              <PropertyRef Name="PizzaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admins" EntityType="Self.Admin" />
+          <EntitySet Name="Costumers" EntityType="Self.Costumer" />
+          <EntitySet Name="OrderTbs" EntityType="Self.OrderTb" />
+          <EntitySet Name="Pizzas" EntityType="Self.Pizza" />
+          <AssociationSet Name="FK_OrderTb_Admin" Association="Self.FK_OrderTb_Admin">
+            <End Role="Admin" EntitySet="Admins" />
+            <End Role="OrderTb" EntitySet="OrderTbs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderTb_OrderTb" Association="Self.FK_OrderTb_OrderTb">
+            <End Role="Costumer" EntitySet="Costumers" />
+            <End Role="OrderTb" EntitySet="OrderTbs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderTb_Pizza" Association="Self.FK_OrderTb_Pizza">
+            <End Role="Pizza" EntitySet="Pizzas" />
+            <End Role="OrderTb" EntitySet="OrderTbs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PizzasDBModelStoreContainer" CdmEntityContainer="PDBEntities">
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="PizzasDBModel.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Costumers">
+            <EntityTypeMapping TypeName="PizzasDBModel.Costumer">
+              <MappingFragment StoreEntitySet="Costumer">
+                <ScalarProperty Name="CostumerId" ColumnName="CostumerId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Addresss" ColumnName="Addresss" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="TelNo" ColumnName="TelNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderTbs">
+            <EntityTypeMapping TypeName="PizzasDBModel.OrderTb">
+              <MappingFragment StoreEntitySet="OrderTb">
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="PizzaId" ColumnName="PizzaId" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Payment" ColumnName="Payment" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pizzas">
+            <EntityTypeMapping TypeName="PizzasDBModel.Pizza">
+              <MappingFragment StoreEntitySet="Pizza">
+                <ScalarProperty Name="PizzaId" ColumnName="PizzaId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="QtyStock" ColumnName="QtyStock" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
